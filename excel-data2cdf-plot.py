@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
+import math
 
 # it will read excel file as a dataframe format
 excelData = pd.read_excel(r"C:\Users\z5259\OneDrive\2022_論文撰寫檔案夾\network-test-v2\total_avg_latency.xlsx",
@@ -13,6 +14,15 @@ latencyArray = excelData.to_numpy()
 
 # ----------------------------------------- plot 5G SA latency CDF -----------------------------------------------
 latency5GSA = latencyArray[:,0]
+lenLatency5GSA = len(latency5GSA)
+avg5GSA = np.average(latency5GSA)
+sumSquare5GSA = 0
+for i in latency5GSA:
+    minusAvg5GSA = i - avg5GSA
+    square5GSA = minusAvg5GSA**2
+    sumSquare5GSA += square5GSA
+mdev5GSA = math.sqrt(sumSquare5GSA/lenLatency5GSA)
+print("5GSA total mdev: ", mdev5GSA) 
 max5GSA = np.max(latency5GSA)
 
 # plot cdf as continuous distrubute
@@ -53,6 +63,17 @@ max5GNSA = np.max(latency5GNSA)
 
 # plot cdf as continuous distrubute
 x = latency5GNSA
+lenLatency5GNSA = len(latency5GNSA)
+avg5GNSA = np.average(latency5GNSA)
+sumSquare5GNSA = 0
+for i in latency5GNSA:
+    minusAvg5GNSA = i - avg5GNSA
+    square5GNSA = minusAvg5GNSA**2
+    sumSquare5GNSA += square5GNSA
+mdev5GNSA = math.sqrt(sumSquare5GNSA/lenLatency5GNSA)
+print("5GNSA total mdev: ", mdev5GNSA) 
+
+
 hist, bin_edge = np.histogram(x, bins=50)
 cdf = np.cumsum(hist/sum(hist))
 
